@@ -1,0 +1,8 @@
+{% load wagtailimages_tags %}
+
+<div class="slide">
+    <div class="inner">
+        {% image self.icon_image original as img %}
+        <img src="{{ img.url }}" alt="">
+    </div>
+</div>

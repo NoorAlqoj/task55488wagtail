@@ -1,0 +1,14 @@
+{% load wagtailimages_tags %}
+
+  <div class="">
+    <span>step {{ forloop.counter }}</span>
+    <div class="icon">
+        {% image self.icon_image original as img %}
+        <img src="{{img.url}}" alt="">
+    </div>
+    <p class="title">{{ self.title }}</p>
+    <p>{{ self.description}}</p>
+</div>
+
+
+
