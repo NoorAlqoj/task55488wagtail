@@ -20,3 +20,12 @@ class ClienticonBlock(blocks.StructBlock):
         template = "home/client_icon_block.html"
         icon = "edit"
         label = "Icon"
+
+
+class HowSectBlock(blocks.StructBlock):
+    step = blocks.ListBlock(HowStepBlock)
+
+    class Meta:  # noqa
+        template = "home/how_step_block.html"
+        icon = "edit"
+        label = "Step"
