@@ -1,5 +1,6 @@
 from django.db import models
 from django import forms
+from django.db.models.fields import CharField
 
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField, StreamField
@@ -10,6 +11,7 @@ from wagtail.admin.edit_handlers import (
     InlinePanel,
     StreamFieldPanel,
 )
+from wagtail.core.blocks import ListBlock, StreamBlock
 from . import blocks
 from modelcluster.fields import ParentalKey,ParentalManyToManyField
 from wagtail.core.fields import RichTextField
@@ -74,10 +76,28 @@ class HomePage(Page):
         blank=False
     )
 
+
+    how_section_title = CharField("How It Work Title", max_length=255, null=True, blank=False)
+    how_section_description = RichTextField(features=["bold", "italic"], null=True)
+    how_section_icon_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    # Try the following two options
+    # how_section = StreamField([("how_works_section", ListBlock(blocks.HowStepBlock()))], null=True, blank=True)
+    how_section = StreamField(StreamBlock([("how_works_section", blocks.HowSectBlock())], max_num=1), null=True, blank=True)
+
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [InlinePanel("top_slider_sec",min_num=1, label="Slider")],
             heading="Top Slider Section",
+        ),
+        MultiFieldPanel(
+            [FieldPanel("how_section_title"), FieldPanel("how_section_description"), FieldPanel("how_section_icon_image"), StreamFieldPanel('how_section')],
+            heading="How it Works Section 2",
         ),
         MultiFieldPanel(
             [InlinePanel("how_it_works", min_num=1,label="How it Works")],
